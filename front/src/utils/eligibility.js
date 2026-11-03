@@ -58,6 +58,25 @@ function checkTeam(rule, profile) {
   return { field: 'team', result: ok ? PASS : FAIL, message: label }
 }
 
+// 프로필 없이 자격요건 자체를 사람이 읽을 수 있게 정리 (상세 화면용)
+export function describeEligibility(eligibility = {}) {
+  const { grades, regions, majors, age, team, note } = eligibility
+  const ageText = age
+    ? [age.min != null && `만 ${age.min}세 이상`, age.max != null && `만 ${age.max}세 이하`].filter(Boolean).join(', ')
+    : null
+
+  const rows = [
+    { label: '학년', value: grades ? `${grades.join('·')}학년` : null },
+    { label: '지역', value: regions ? regions.join('·') : null },
+    { label: '전공', value: majors ? `${majors.join('·')} 계열` : null },
+    { label: '연령', value: ageText },
+    { label: '팀 구성', value: team === 'TEAM' ? '팀 지원만 가능' : team === 'SOLO' ? '개인 지원만 가능' : null },
+  ].map((row) => ({ ...row, value: row.value ?? '제한 없음' }))
+
+  if (note) rows.push({ label: '기타', value: note, needsCheck: true })
+  return rows
+}
+
 /**
  * @returns {{ status: 'ELIGIBLE' | 'CHECK' | 'INELIGIBLE', reasons: Array<{ field, result, message }> } | null}
  *          프로필이 없으면 null
