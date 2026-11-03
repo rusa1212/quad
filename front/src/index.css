@@ -198,3 +198,68 @@ a {
   color: var(--text-muted);
   font-weight: 500;
 }
+
+.badge-eligibility-ELIGIBLE {
+  color: var(--success);
+  background: #dcfce7;
+}
+
+.badge-eligibility-CHECK {
+  color: var(--warning);
+  background: #ffedd5;
+}
+
+.badge-eligibility-INELIGIBLE {
+  color: var(--danger);
+  background: #fee2e2;
+}
+
+/* ---------- 폼 ---------- */
+
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.field-input {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.field-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.field-hint {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---------- 안내 배너 ---------- */
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 14px 16px;
+  font-size: 15px;
+  background: var(--accent-bg);
+  border-radius: 10px;
+}
+
+.notice a {
+  font-weight: 600;
+  white-space: nowrap;
+}
