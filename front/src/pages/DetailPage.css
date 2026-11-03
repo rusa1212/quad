@@ -1,0 +1,173 @@
+.back-link {
+  padding: 0;
+  margin-bottom: 16px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.detail-header {
+  margin-bottom: 24px;
+}
+
+.detail-header .badges {
+  margin-bottom: 12px;
+}
+
+.detail-header h1 {
+  font-size: 28px;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-aside {
+  position: sticky;
+  top: 80px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.panel-title h2 {
+  margin: 0;
+}
+
+.ai-label {
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.1);
+  border-radius: 999px;
+}
+
+.summary-list,
+.info-list {
+  margin: 0;
+}
+
+.summary-list div,
+.info-list div {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-list div:last-child,
+.info-list div:last-child {
+  border-bottom: none;
+}
+
+.summary-list dt,
+.info-list dt {
+  flex-shrink: 0;
+  width: 72px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.summary-list dd,
+.info-list dd {
+  margin: 0;
+  color: var(--text-h);
+}
+
+.summary-list ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.eligibility-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.eligibility-table th,
+.eligibility-table td {
+  padding: 10px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.eligibility-table th {
+  width: 88px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.eligibility-table td {
+  color: var(--text-h);
+}
+
+.eligibility-table tr.needs-check td {
+  color: var(--warning);
+}
+
+.original-text {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.original-text h3 {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.info-list {
+  margin-bottom: 16px;
+}
+
+.attachments {
+  margin-top: 20px;
+}
+
+.attachments h3 {
+  font-size: 15px;
+}
+
+.attachments ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 15px;
+}
+
+@media (max-width: 860px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-header h1 {
+    font-size: 22px;
+  }
+}
