@@ -1,0 +1,118 @@
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field-group {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.field-group legend {
+  padding: 0;
+}
+
+.option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 15px;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.option:hover {
+  border-color: var(--accent);
+}
+
+.option.active {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.option input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.form-actions .button-primary {
+  width: auto;
+  flex: 1;
+}
+
+.profile-preview {
+  position: sticky;
+  top: 80px;
+}
+
+.profile-preview .panel-note:first-of-type {
+  margin-top: 0;
+}
+
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.preview-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-list strong {
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+@media (max-width: 860px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-preview {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}

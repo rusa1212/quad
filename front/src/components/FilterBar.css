@@ -1,0 +1,99 @@
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.filter-search {
+  width: 100%;
+  padding: 10px 14px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.filter-search:focus,
+.filter-selects select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.filter-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+}
+
+.chip.active {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.filter-selects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-selects select {
+  min-width: 0;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-reset {
+  margin-left: auto;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .filter-selects select {
+    flex: 1 1 calc(50% - 4px);
+  }
+}
+
+.filter-fit {
+  font-weight: 600;
+  color: var(--accent);
+}
