@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
+import { useBookmarks } from '../context/bookmarks.js'
 import './Navbar.css'
 
 const NAV_ITEMS = [
@@ -9,6 +10,8 @@ const NAV_ITEMS = [
 ]
 
 function Navbar() {
+  const { bookmarks } = useBookmarks()
+
   return (
     <header className="navbar">
       <div className="navbar-inner">
@@ -24,6 +27,11 @@ function Navbar() {
               className={({ isActive }) => (isActive ? 'navbar-link active' : 'navbar-link')}
             >
               {item.label}
+              {item.to === '/calendar' && bookmarks.length > 0 && (
+                <span className="navbar-count" aria-label={`관심 프로그램 ${bookmarks.length}개`}>
+                  {bookmarks.length}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
