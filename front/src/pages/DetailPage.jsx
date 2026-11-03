@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApplyStatusBadge, DdayBadge, EligibilityBadge, TypeBadge } from '../components/Badges.jsx'
+import BookmarkButton from '../components/BookmarkButton.jsx'
 import { useProfile } from '../context/profile.js'
 import { SOURCES } from '../data/constants.js'
 import { getProgramById } from '../data/programs.js'
@@ -176,6 +177,7 @@ function DetailPage() {
             ) : (
               <span className="button-primary disabled">원문 링크 없음</span>
             )}
+            <BookmarkButton programId={program.id} variant="full" />
 
             {program.attachments.length > 0 && (
               <div className="attachments">

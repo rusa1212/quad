@@ -1,0 +1,357 @@
+.calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-nav h2 {
+  margin: 0;
+  min-width: 120px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.icon-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  border-color: var(--accent);
+}
+
+.today-button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.calendar-notice {
+  margin-bottom: 16px;
+}
+
+/* ---------- 달력 ---------- */
+
+.calendar {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-row + .calendar-row {
+  border-top: 1px solid var(--border);
+}
+
+.calendar-weekday {
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--bg);
+}
+
+.calendar-weekday:first-child {
+  color: var(--danger);
+}
+
+.calendar-weekday:last-child {
+  color: var(--accent);
+}
+
+.calendar-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 104px;
+  padding: 6px;
+  font: inherit;
+  text-align: left;
+  color: var(--text-h);
+  background: var(--surface);
+  border: none;
+  border-left: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.calendar-cell:first-child {
+  border-left: none;
+}
+
+.calendar-cell:disabled {
+  cursor: default;
+}
+
+.calendar-cell.has-items:hover {
+  background: var(--bg);
+}
+
+.calendar-cell.outside {
+  color: #c0c4cc;
+  background: #fcfcfd;
+}
+
+.calendar-cell.selected {
+  background: var(--accent-bg);
+}
+
+.calendar-date {
+  align-self: flex-start;
+  min-width: 26px;
+  height: 26px;
+  font-size: 14px;
+  line-height: 26px;
+  text-align: center;
+  border-radius: 999px;
+}
+
+.calendar-cell.today .calendar-date {
+  color: #fff;
+  font-weight: 700;
+  background: var(--accent);
+}
+
+.calendar-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.calendar-chip {
+  overflow: hidden;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-radius: 4px;
+}
+
+.calendar-chip.normal {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.calendar-chip.urgent {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.calendar-chip.critical {
+  color: #fff;
+  background: var(--danger);
+}
+
+.calendar-chip.closed {
+  color: var(--text-muted);
+  background: #f3f4f6;
+  text-decoration: line-through;
+}
+
+.calendar-more {
+  padding-left: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 모바일에서만 보이는 건수 점 */
+.calendar-dot {
+  display: none;
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.calendar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-swatch.critical {
+  background: var(--danger);
+}
+
+.legend-swatch.urgent {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.legend-swatch.normal {
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+.legend-swatch.closed {
+  background: #f3f4f6;
+  border: 1px solid var(--border);
+}
+
+/* ---------- 마감 목록 ---------- */
+
+.deadline-list {
+  margin-top: 28px;
+}
+
+.deadline-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.deadline-list-head h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.text-button {
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.deadline-list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deadline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.deadline-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.deadline-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.deadline-title:hover {
+  color: var(--accent);
+}
+
+.deadline-meta {
+  font-size: 14px;
+}
+
+.deadline-reminders {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.reminder {
+  padding: 1px 8px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: 999px;
+}
+
+.reminder.sent {
+  color: var(--text-muted);
+  background: #f3f4f6;
+}
+
+@media (max-width: 640px) {
+  .calendar-cell {
+    min-height: 56px;
+    padding: 4px;
+    align-items: center;
+  }
+
+  .calendar-date {
+    align-self: center;
+  }
+
+  .calendar-chips {
+    display: none;
+  }
+
+  .calendar-dot {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+
+  .calendar-nav h2 {
+    min-width: 0;
+    font-size: 18px;
+  }
+}
