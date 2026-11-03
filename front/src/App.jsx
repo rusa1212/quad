@@ -1,9 +1,27 @@
+import { Route, Routes } from 'react-router-dom'
+import Navbar from './components/Navbar.jsx'
+import ListPage from './pages/ListPage.jsx'
+import DetailPage from './pages/DetailPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
+import AskPage from './pages/AskPage.jsx'
+import CalendarPage from './pages/CalendarPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
+
 function App() {
   return (
-    <main className="container">
-      <h1>대학생 참여 프로그램 통합 플랫폼</h1>
-      <p>흩어진 창업·공모전·청년정책 프로그램을 한곳에서 찾아보세요.</p>
-    </main>
+    <>
+      <Navbar />
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<ListPage />} />
+          <Route path="/programs/:id" element={<DetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/ask" element={<AskPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+    </>
   )
 }
 
