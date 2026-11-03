@@ -92,3 +92,8 @@
     flex: 1 1 calc(50% - 4px);
   }
 }
+
+.filter-fit {
+  font-weight: 600;
+  color: var(--accent);
+}

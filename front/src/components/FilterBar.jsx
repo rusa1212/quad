@@ -1,7 +1,7 @@
 import { PROGRAM_TYPES, REGIONS } from '../data/constants.js'
 import './FilterBar.css'
 
-function FilterBar({ filters, hostOrgs, onChange, onReset }) {
+function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset }) {
   return (
     <div className="filter-bar">
       <input
@@ -62,6 +62,17 @@ function FilterBar({ filters, hostOrgs, onChange, onReset }) {
           />
           마감된 프로그램 포함
         </label>
+
+        {hasProfile && (
+          <label className="filter-check filter-fit">
+            <input
+              type="checkbox"
+              checked={Boolean(filters.fit)}
+              onChange={(e) => onChange('fit', e.target.checked ? '1' : '')}
+            />
+            내 조건에 맞는 것만
+          </label>
+        )}
 
         <button type="button" className="filter-reset" onClick={onReset}>
           초기화

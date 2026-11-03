@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
-import { ApplyStatusBadge, DdayBadge, TypeBadge } from './Badges.jsx'
+import { ApplyStatusBadge, DdayBadge, EligibilityBadge, TypeBadge } from './Badges.jsx'
 import { formatPeriod } from '../utils/date.js'
 import './ProgramCard.css'
 
-function ProgramCard({ program }) {
+// eligibilityStatus: 'ELIGIBLE' | 'CHECK' | 'INELIGIBLE' | undefined(프로필 없음)
+function ProgramCard({ program, eligibilityStatus }) {
   return (
     <Link to={`/programs/${program.id}`} className="program-card">
       <div className="program-card-top">
         <div className="badges">
           <TypeBadge type={program.type} />
           <ApplyStatusBadge program={program} />
+          <EligibilityBadge status={eligibilityStatus} />
         </div>
         <DdayBadge applyEnd={program.apply_end} />
       </div>

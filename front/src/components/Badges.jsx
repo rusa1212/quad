@@ -1,4 +1,4 @@
-import { PROGRAM_TYPES } from '../data/constants.js'
+import { ELIGIBILITY_STATUS, PROGRAM_TYPES } from '../data/constants.js'
 import { APPLY_STATUS_LABELS, daysUntil, formatDday, getApplyStatus } from '../utils/date.js'
 
 export function TypeBadge({ type }) {
@@ -18,4 +18,10 @@ export function DdayBadge({ applyEnd }) {
   if (days < 0) tone = 'closed'
   else if (days <= 7) tone = 'urgent'
   return <span className={`dday ${tone}`}>{formatDday(applyEnd)}</span>
+}
+
+// 지원 가능 / 확인 필요 / 지원 불가 (프로필이 없으면 표시 안 함)
+export function EligibilityBadge({ status }) {
+  if (!status) return null
+  return <span className={`badge badge-eligibility-${status}`}>{ELIGIBILITY_STATUS[status]}</span>
 }
