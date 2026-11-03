@@ -171,3 +171,86 @@
     font-size: 22px;
   }
 }
+
+/* ---------- 내 프로필 기준 판정 ---------- */
+
+.judgment {
+  position: relative;
+  margin: 12px 0 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.judgment-ELIGIBLE {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.judgment-CHECK {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.judgment-INELIGIBLE {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.judgment-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-right: 72px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.judgment-reasons {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+}
+
+.judgment-reasons li {
+  display: flex;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.reason-icon {
+  flex-shrink: 0;
+  width: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.reason-PASS .reason-icon {
+  color: var(--success);
+}
+
+.reason-FAIL {
+  color: var(--danger);
+}
+
+.reason-UNKNOWN {
+  color: var(--warning);
+}
+
+.judgment-empty {
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.judgment-edit {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 14px;
+}
+
+.judgment-notice {
+  margin: 12px 0 16px;
+}

@@ -30,3 +30,33 @@
     grid-template-columns: 1fr;
   }
 }
+
+.list-notice {
+  margin-bottom: 16px;
+}
+
+.list-count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+}
+
+.list-breakdown {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-danger {
+  color: var(--danger);
+}

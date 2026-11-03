@@ -1,14 +1,24 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ApplyStatusBadge, DdayBadge, TypeBadge } from '../components/Badges.jsx'
+import { ApplyStatusBadge, DdayBadge, EligibilityBadge, TypeBadge } from '../components/Badges.jsx'
+import { useProfile } from '../context/profile.js'
 import { SOURCES } from '../data/constants.js'
 import { getProgramById } from '../data/programs.js'
 import { formatDate, formatPeriod } from '../utils/date.js'
-import { describeEligibility } from '../utils/eligibility.js'
+import { describeEligibility, evaluateEligibility } from '../utils/eligibility.js'
 import './DetailPage.css'
+
+const RESULT_ICONS = { PASS: '✓', FAIL: '✕', UNKNOWN: '?' }
+
+const STATUS_MESSAGES = {
+  ELIGIBLE: '내 프로필 기준으로 지원할 수 있어요.',
+  CHECK: '일부 조건은 원문을 직접 확인해야 해요.',
+  INELIGIBLE: '맞지 않는 조건이 있어요.',
+}
 
 function DetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { profile } = useProfile()
   const program = getProgramById(id)
 
   // 목록에서 들어왔으면 뒤로가기(필터 유지), 주소로 바로 들어왔으면 목록으로
@@ -29,6 +39,7 @@ function DetailPage() {
 
   const card = program.summary_card
   const hasUrl = program.url && program.url !== '#'
+  const judgment = evaluateEligibility(program, profile)
 
   return (
     <article>
@@ -40,6 +51,7 @@ function DetailPage() {
         <div className="badges">
           <TypeBadge type={program.type} />
           <ApplyStatusBadge program={program} />
+          <EligibilityBadge status={judgment?.status} />
           <DdayBadge applyEnd={program.apply_end} />
         </div>
         <h1>{program.title}</h1>
@@ -82,6 +94,38 @@ function DetailPage() {
 
           <section className="panel">
             <h2>자격요건</h2>
+
+            {judgment ? (
+              <div className={`judgment judgment-${judgment.status}`}>
+                <div className="judgment-head">
+                  <EligibilityBadge status={judgment.status} />
+                  <span>{STATUS_MESSAGES[judgment.status]}</span>
+                </div>
+                {judgment.reasons.length > 0 ? (
+                  <ul className="judgment-reasons">
+                    {judgment.reasons.map((reason) => (
+                      <li key={reason.field} className={`reason-${reason.result}`}>
+                        <span className="reason-icon" aria-hidden="true">
+                          {RESULT_ICONS[reason.result]}
+                        </span>
+                        {reason.message}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="judgment-empty">별도 자격 제한이 없는 프로그램이에요.</p>
+                )}
+                <Link to="/profile" className="judgment-edit">
+                  프로필 수정
+                </Link>
+              </div>
+            ) : (
+              <div className="notice judgment-notice">
+                <span>프로필을 입력하면 이 프로그램에 지원할 수 있는지 알려드려요.</span>
+                <Link to="/profile">프로필 입력하기 →</Link>
+              </div>
+            )}
+
             <table className="eligibility-table">
               <tbody>
                 {describeEligibility(program.eligibility).map((row) => (
