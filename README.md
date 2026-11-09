@@ -67,6 +67,14 @@ venv\Scripts\python -m collectors.kstartup --all       # 마감된 공고까지 
 
 여러 번 실행해도 같은 공고는 중복 저장되지 않고 최신 내용으로 갱신됩니다.
 
+### 자동 수집 (GitHub Actions)
+
+`.github/workflows/collect.yml`이 **매일 06:00 (KST)** 위 수집기를 실행합니다. 웹 화면은 새로고침하면 새 공고가 보입니다.
+
+- 저장소 Settings → Secrets and variables → Actions 에 `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `DATA_GO_KR_SERVICE_KEY` 등록
+- 예약 실행은 이 파일이 **main 브랜치**에 있어야 동작합니다
+- 바로 돌려보려면 Actions 탭 → Collect programs → Run workflow
+
 ### 웹 화면 (front 폴더)
 
 ```powershell
