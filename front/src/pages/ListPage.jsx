@@ -1,16 +1,17 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import FilterBar from '../components/FilterBar.jsx'
+import LoadState from '../components/LoadState.jsx'
 import ProgramCard from '../components/ProgramCard.jsx'
 import { useProfile } from '../context/profile.js'
-import { programs } from '../data/programs.js'
+import { usePrograms } from '../context/programs.js'
 import { evaluateEligibility } from '../utils/eligibility.js'
 import { DEFAULT_FILTERS, filterPrograms, getHostOrgs, sortPrograms } from '../utils/filter.js'
 import './ListPage.css'
 
-const hostOrgs = getHostOrgs(programs)
-
 function ListPage() {
   const { profile } = useProfile()
+  const { programs, loading, error } = usePrograms()
+  const hostOrgs = getHostOrgs(programs)
 
   // 필터를 URL 쿼리에 저장 → 상세 화면에서 뒤로가기해도 필터 유지, 링크 공유 가능
   const [searchParams, setSearchParams] = useSearchParams()
@@ -75,7 +76,9 @@ function ListPage() {
         </select>
       </div>
 
-      {results.length > 0 ? (
+      {loading || error ? (
+        <LoadState />
+      ) : results.length > 0 ? (
         <div className="program-grid">
           {results.map((program) => (
             <ProgramCard key={program.id} program={program} eligibilityStatus={statusById[program.id]} />

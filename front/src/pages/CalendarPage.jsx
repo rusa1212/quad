@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { DdayBadge, TypeBadge } from '../components/Badges.jsx'
 import BookmarkButton from '../components/BookmarkButton.jsx'
 import { useBookmarks } from '../context/bookmarks.js'
-import { programs } from '../data/programs.js'
+import { usePrograms } from '../context/programs.js'
 import { buildMonthGrid, getReminders, getUrgency, groupByDeadline, toDateKey, WEEKDAYS } from '../utils/calendar.js'
 import { daysUntil, formatDate } from '../utils/date.js'
 import './CalendarPage.css'
@@ -12,6 +12,7 @@ const MAX_CHIPS = 2 // 한 칸에 보여줄 최대 프로그램 수 (나머지�
 
 function CalendarPage() {
   const { bookmarks } = useBookmarks()
+  const { programs } = usePrograms()
   const [today] = useState(() => new Date())
   const [cursor, setCursor] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1))
   const [showAll, setShowAll] = useState(false)
@@ -25,7 +26,7 @@ function CalendarPage() {
   const visible = showAll ? programs : programs.filter((program) => bookmarks.includes(program.id))
   const byDeadline = groupByDeadline(visible)
   const upcoming = visible
-    .filter((program) => daysUntil(program.apply_end, today) >= 0)
+    .filter((program) => program.apply_end && daysUntil(program.apply_end, today) >= 0)
     .sort((a, b) => a.apply_end.localeCompare(b.apply_end))
   const listItems = selectedDate ? (byDeadline[selectedDate] ?? []) : upcoming
 
@@ -172,7 +173,7 @@ function CalendarPage() {
                   <p className="deadline-meta">
                     {program.host_org} · {formatDate(program.apply_end)} 마감
                   </p>
-                  {bookmarks.includes(program.id) && daysUntil(program.apply_end, today) >= 0 && (
+                  {bookmarks.includes(program.id) && program.apply_end && daysUntil(program.apply_end, today) >= 0 && (
                     <p className="deadline-reminders">
                       알림
                       {getReminders(program.apply_end, today).map((reminder) => (

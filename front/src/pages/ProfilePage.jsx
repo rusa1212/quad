@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useProfile } from '../context/profile.js'
 import { GRADES, MAJOR_CATEGORIES, PROGRAM_TYPES, REGIONS } from '../data/constants.js'
-import { programs } from '../data/programs.js'
+import { usePrograms } from '../context/programs.js'
 import { daysUntil } from '../utils/date.js'
 import { evaluateEligibility } from '../utils/eligibility.js'
 import './ProfilePage.css'
@@ -36,6 +36,7 @@ function toProfile(form) {
 
 function ProfilePage() {
   const { profile, saveProfile, clearProfile } = useProfile()
+  const { programs } = usePrograms()
   const [form, setForm] = useState(() => toForm(profile))
   const [saved, setSaved] = useState(false)
 
