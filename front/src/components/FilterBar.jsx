@@ -1,17 +1,31 @@
+import { useState } from 'react'
 import { PROGRAM_TYPES, REGIONS } from '../data/constants.js'
 import './FilterBar.css'
 
-function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset }) {
+// 검색창은 입력값을 자체 state로 들고, URL(?q=)에는 따라서 반영만 함.
+// URL 값을 바로 value로 쓰면 URL 갱신이 한 박자 늦어 한글 조합(ㅎ→하→한)이 끊겨 자모가 따로 입력됨.
+// 초기화 등 외부에서 검색어를 바꿀 때는 부모가 key를 바꿔 새로 마운트함.
+function SearchInput({ initialValue, onChange }) {
+  const [text, setText] = useState(initialValue)
+  return (
+    <input
+      type="search"
+      className="filter-search"
+      placeholder="프로그램명, 기관명으로 검색"
+      value={text}
+      onChange={(e) => {
+        setText(e.target.value)
+        onChange(e.target.value)
+      }}
+      aria-label="검색어"
+    />
+  )
+}
+
+function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset, searchKey }) {
   return (
     <div className="filter-bar">
-      <input
-        type="search"
-        className="filter-search"
-        placeholder="프로그램명, 기관명으로 검색"
-        value={filters.q}
-        onChange={(e) => onChange('q', e.target.value)}
-        aria-label="검색어"
-      />
+      <SearchInput key={searchKey} initialValue={filters.q} onChange={(value) => onChange('q', value)} />
 
       <div className="filter-types" role="group" aria-label="유형">
         <button type="button" className={!filters.type ? 'chip active' : 'chip'} onClick={() => onChange('type', '')}>

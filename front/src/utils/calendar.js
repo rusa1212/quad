@@ -26,6 +26,7 @@ export function buildMonthGrid(year, month) {
 export function groupByDeadline(programs) {
   const groups = {}
   for (const program of programs) {
+    if (!program.apply_end) continue
     ;(groups[program.apply_end] ??= []).push(program)
   }
   return groups

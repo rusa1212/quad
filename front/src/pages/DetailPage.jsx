@@ -1,10 +1,11 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApplyStatusBadge, DdayBadge, EligibilityBadge, TypeBadge } from '../components/Badges.jsx'
 import BookmarkButton from '../components/BookmarkButton.jsx'
+import LoadState from '../components/LoadState.jsx'
 import { useProfile } from '../context/profile.js'
 import { SOURCES } from '../data/constants.js'
-import { getProgramById } from '../data/programs.js'
-import { formatDate, formatPeriod } from '../utils/date.js'
+import { usePrograms } from '../context/programs.js'
+import { formatDate, formatDateTime, formatPeriod } from '../utils/date.js'
 import { describeEligibility, evaluateEligibility } from '../utils/eligibility.js'
 import './DetailPage.css'
 
@@ -20,6 +21,7 @@ function DetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { profile } = useProfile()
+  const { loading, error, getProgramById } = usePrograms()
   const program = getProgramById(id)
 
   // 목록에서 들어왔으면 뒤로가기(필터 유지), 주소로 바로 들어왔으면 목록으로
@@ -27,6 +29,8 @@ function DetailPage() {
     if (window.history.state?.idx > 0) navigate(-1)
     else navigate('/')
   }
+
+  if (loading || error) return <LoadState />
 
   if (!program) {
     return (
@@ -64,33 +68,41 @@ function DetailPage() {
           <section className="panel">
             <div className="panel-title">
               <h2>한눈에 보는 요약</h2>
-              <span className="ai-label">AI 요약</span>
+              {card && <span className="ai-label">AI 요약</span>}
             </div>
             <dl className="summary-list">
               <div>
                 <dt>지원 대상</dt>
-                <dd>{card.target}</dd>
+                <dd>{card?.target ?? program.target_text ?? '원문 확인'}</dd>
               </div>
-              <div>
-                <dt>지원 내용</dt>
-                <dd>{card.benefits}</dd>
-              </div>
+              {card && (
+                <div>
+                  <dt>지원 내용</dt>
+                  <dd>{card.benefits}</dd>
+                </div>
+              )}
               <div>
                 <dt>신청 기간</dt>
                 <dd>{formatPeriod(program.apply_start, program.apply_end)}</dd>
               </div>
-              <div>
-                <dt>제출 서류</dt>
-                <dd>
-                  <ul>
-                    {card.documents.map((doc) => (
-                      <li key={doc}>{doc}</li>
-                    ))}
-                  </ul>
-                </dd>
-              </div>
+              {card?.documents?.length > 0 && (
+                <div>
+                  <dt>제출 서류</dt>
+                  <dd>
+                    <ul>
+                      {card.documents.map((doc) => (
+                        <li key={doc}>{doc}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
             </dl>
-            <p className="panel-note">AI가 공고 원문을 요약한 내용이에요. 정확한 내용은 원문을 확인하세요.</p>
+            <p className="panel-note">
+              {card
+                ? 'AI가 공고 원문을 요약한 내용이에요. 정확한 내용은 원문을 확인하세요.'
+                : 'AI 요약은 아직 준비 중이에요. 지원 내용과 제출 서류는 공고 원문을 확인하세요.'}
+            </p>
           </section>
 
           <section className="panel">
@@ -190,7 +202,7 @@ function DetailPage() {
               </div>
             )}
 
-            <p className="panel-note">마지막 수집: {program.updated_at.replace('T', ' ').slice(0, 16)}</p>
+            <p className="panel-note">마지막 수집: {formatDateTime(program.updated_at)}</p>
           </section>
         </aside>
       </div>
