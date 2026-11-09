@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import FilterBar from '../components/FilterBar.jsx'
 import LoadState from '../components/LoadState.jsx'
@@ -15,6 +16,7 @@ function ListPage() {
 
   // 필터를 URL 쿼리에 저장 → 상세 화면에서 뒤로가기해도 필터 유지, 링크 공유 가능
   const [searchParams, setSearchParams] = useSearchParams()
+  const [searchKey, setSearchKey] = useState(0) // 초기화 시 검색창을 새로 마운트해 입력값 비우기
   const filters = { ...DEFAULT_FILTERS, ...Object.fromEntries(searchParams) }
 
   function updateFilter(key, value) {
@@ -26,6 +28,7 @@ function ListPage() {
 
   function resetFilters() {
     setSearchParams({}, { replace: true })
+    setSearchKey((k) => k + 1)
   }
 
   const results = sortPrograms(filterPrograms(programs, filters, { profile }), filters.sort)
@@ -55,6 +58,7 @@ function ListPage() {
         hasProfile={Boolean(profile)}
         onChange={updateFilter}
         onReset={resetFilters}
+        searchKey={searchKey}
       />
 
       <div className="list-toolbar">
