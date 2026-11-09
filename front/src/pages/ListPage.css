@@ -60,3 +60,8 @@
 .text-danger {
   color: var(--danger);
 }
+
+.list-page-info {
+  font-size: 14px;
+  color: var(--text-muted);
+}
