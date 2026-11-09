@@ -33,7 +33,7 @@ export function filterPrograms(programs, filters, { profile = null, today = new 
     if (!filters.closed && days < 0) return false
     if (filters.deadline && (days < 0 || days > Number(filters.deadline))) return false
     if (keyword) {
-      const text = `${program.title} ${program.summary} ${program.host_org}`.toLowerCase()
+      const text = `${program.title} ${program.summary ?? ''} ${program.host_org ?? ''}`.toLowerCase()
       if (!text.includes(keyword)) return false
     }
     return true
@@ -44,14 +44,14 @@ export function sortPrograms(programs, sort, today = new Date()) {
   const sorted = [...programs]
 
   if (sort === 'latest') {
-    sorted.sort((a, b) => b.apply_start.localeCompare(a.apply_start))
+    sorted.sort((a, b) => (b.apply_start ?? '').localeCompare(a.apply_start ?? ''))
   } else {
     // 마감 임박순: 접수 중·예정은 마감일 빠른 순, 마감된 것은 맨 뒤
     sorted.sort((a, b) => {
       const aClosed = daysUntil(a.apply_end, today) < 0
       const bClosed = daysUntil(b.apply_end, today) < 0
       if (aClosed !== bClosed) return aClosed ? 1 : -1
-      return a.apply_end.localeCompare(b.apply_end)
+      return (a.apply_end ?? '9999').localeCompare(b.apply_end ?? '9999')
     })
   }
   return sorted
@@ -59,5 +59,5 @@ export function sortPrograms(programs, sort, today = new Date()) {
 
 // 주관기관 필터 선택지
 export function getHostOrgs(programs) {
-  return [...new Set(programs.map((program) => program.host_org))].sort((a, b) => a.localeCompare(b, 'ko'))
+  return [...new Set(programs.map((program) => program.host_org).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'))
 }

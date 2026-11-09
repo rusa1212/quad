@@ -11,14 +11,16 @@ function startOfDay(date) {
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
-// 마감일까지 남은 일수 (오늘 마감이면 0, 지났으면 음수)
+// 마감일까지 남은 일수 (오늘 마감이면 0, 지났으면 음수, 날짜 없음(상시)이면 Infinity)
 export function daysUntil(value, today = new Date()) {
+  if (!value) return Infinity
   return Math.round((parseDate(value) - startOfDay(today)) / DAY_MS)
 }
 
 // 'D-3', 'D-Day', '마감'
 export function formatDday(applyEnd, today = new Date()) {
   const days = daysUntil(applyEnd, today)
+  if (days === Infinity) return '상시'
   if (days < 0) return '마감'
   if (days === 0) return 'D-Day'
   return `D-${days}`
@@ -27,7 +29,7 @@ export function formatDday(applyEnd, today = new Date()) {
 // 신청 상태: 접수 예정 / 접수 중 / 마감
 export function getApplyStatus(program, today = new Date()) {
   if (daysUntil(program.apply_end, today) < 0) return 'CLOSED'
-  if (daysUntil(program.apply_start, today) > 0) return 'UPCOMING'
+  if (program.apply_start && daysUntil(program.apply_start, today) > 0) return 'UPCOMING'
   return 'OPEN'
 }
 
@@ -39,10 +41,19 @@ export const APPLY_STATUS_LABELS = {
 
 // '2026.11.03'
 export function formatDate(value) {
-  return value.replaceAll('-', '.')
+  return value ? value.replaceAll('-', '.') : '상시'
+}
+
+// timestamptz → '2026.11.09 16:55' (로컬 시간)
+export function formatDateTime(value) {
+  if (!value) return '-'
+  const d = new Date(value)
+  const pad = (n) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
 // '2026.10.20 ~ 2026.11.07'
 export function formatPeriod(start, end) {
-  return `${formatDate(start)} ~ ${formatDate(end)}`
+  if (!start && !end) return '상시'
+  return `${start ? formatDate(start) : ''} ~ ${end ? formatDate(end) : '상시'}`
 }

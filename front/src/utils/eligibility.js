@@ -59,8 +59,8 @@ function checkTeam(rule, profile) {
 }
 
 // 프로필 없이 자격요건 자체를 사람이 읽을 수 있게 정리 (상세 화면용)
-export function describeEligibility(eligibility = {}) {
-  const { grades, regions, majors, age, team, note } = eligibility
+export function describeEligibility(eligibility) {
+  const { grades, regions, majors, age, team, note } = eligibility ?? {}
   const ageText = age
     ? [age.min != null && `만 ${age.min}세 이상`, age.max != null && `만 ${age.max}세 이하`].filter(Boolean).join(', ')
     : null
