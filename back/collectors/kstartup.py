@@ -106,7 +106,7 @@ def main() -> None:
 
     service_key = os.getenv("DATA_GO_KR_SERVICE_KEY")
     if not service_key:
-        sys.exit("back/.env 에 DATA_GO_KR_SERVICE_KEY 를 설정하세요.")
+        sys.exit("DATA_GO_KR_SERVICE_KEY 가 없습니다. 로컬은 back/.env, GitHub Actions 는 저장소 Secrets 에 설정하세요.")
 
     print("K-Startup 공고 수집 시작")
     items = fetch_all(service_key, only_open=not args.all, max_pages=1 if args.dry_run else None)
