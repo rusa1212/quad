@@ -1,4 +1,5 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useAuth } from '../context/auth.js'
 import { useBookmarks } from '../context/bookmarks.js'
 import './Navbar.css'
 
@@ -11,6 +12,12 @@ const NAV_ITEMS = [
 
 function Navbar() {
   const { bookmarks } = useBookmarks()
+  const { user, loading, signOut } = useAuth()
+  const location = useLocation()
+
+  function handleSignOut() {
+    signOut().catch((e) => console.error('[auth] 로그아웃 실패', e))
+  }
 
   return (
     <header className="navbar">
@@ -35,6 +42,26 @@ function Navbar() {
             </NavLink>
           ))}
         </nav>
+        {!loading && (
+          <div className="navbar-account">
+            {user ? (
+              <>
+                <span className="navbar-email" title={user.email}>
+                  {user.email}
+                </span>
+                <button type="button" className="navbar-auth" onClick={handleSignOut}>
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              location.pathname !== '/login' && (
+                <Link to="/login" state={{ from: location.pathname + location.search }} className="navbar-auth primary">
+                  로그인
+                </Link>
+              )
+            )}
+          </div>
+        )}
       </div>
     </header>
   )

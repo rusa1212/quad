@@ -1,7 +1,7 @@
 # 공공 API 공고를 매일 수집해 Supabase programs 테이블에 저장 (work.md 6장 "일 1회 증분 수집")
 #
 # 필요한 저장소 Secrets (Settings → Secrets and variables → Actions → New repository secret)
-#   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DATA_GO_KR_SERVICE_KEY
+#   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DATA_GO_KR_SERVICE_KEY, YOUTH_CENTER_API_KEY
 #
 # 주의: schedule 은 기본 브랜치(main)에 이 파일이 있어야 동작합니다.
 #       수동 실행은 Actions 탭 → "Collect programs" → Run workflow
@@ -30,6 +30,7 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       DATA_GO_KR_SERVICE_KEY: ${{ secrets.DATA_GO_KR_SERVICE_KEY }}
+      YOUTH_CENTER_API_KEY: ${{ secrets.YOUTH_CENTER_API_KEY }}
 
     steps:
       - uses: actions/checkout@v5
@@ -44,7 +45,7 @@ jobs:
       - name: Check secrets
         run: |
           missing=0
-          for name in SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY DATA_GO_KR_SERVICE_KEY; do
+          for name in SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY DATA_GO_KR_SERVICE_KEY YOUTH_CENTER_API_KEY; do
             if [ -n "${!name}" ]; then echo "✅ $name 설정됨"; else echo "❌ $name 없음 (Settings → Secrets and variables → Actions → Repository secrets 확인)"; missing=1; fi
           done
           exit $missing
@@ -55,4 +56,9 @@ jobs:
       - name: Collect K-Startup
         run: python -m collectors.kstartup
 
-      # 이후 소스 추가 시 여기에 단계 추가 (온통청년, 기업마당)
+      # 한 소스가 실패해도 다른 소스는 수집되도록 (실패 시 job 은 빨간색으로 표시됨)
+      - name: Collect 온통청년
+        if: ${{ !cancelled() }}
+        run: python -m collectors.youthcenter
+
+      # 이후 소스 추가 시 여기에 단계 추가 (기업마당)

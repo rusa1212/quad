@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useProfile } from '../context/profile.js'
+import { useAuth } from '../context/auth.js'
 import { GRADES, MAJOR_CATEGORIES, PROGRAM_TYPES, REGIONS } from '../data/constants.js'
 import { usePrograms } from '../context/programs.js'
 import { daysUntil } from '../utils/date.js'
@@ -34,11 +35,28 @@ function toProfile(form) {
   }
 }
 
+// 프로필을 다 불러온 뒤에 폼을 그려야 저장된 값이 폼에 채워짐. 계정이 바뀌면 key로 폼을 새로 만듦
 function ProfilePage() {
-  const { profile, saveProfile, clearProfile } = useProfile()
+  const { loading } = useProfile()
+  const { user } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="empty-state" role="status">
+        <p>프로필을 불러오는 중이에요…</p>
+      </div>
+    )
+  }
+  return <ProfileEditor key={user?.id ?? 'guest'} />
+}
+
+function ProfileEditor() {
+  const { profile, saveProfile, clearProfile, isRemote } = useProfile()
   const { programs } = usePrograms()
   const [form, setForm] = useState(() => toForm(profile))
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   function update(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -52,16 +70,33 @@ function ProfilePage() {
     update('interests', next)
   }
 
+  async function run(action) {
+    setSaving(true)
+    setError('')
+    try {
+      await action()
+    } catch (e) {
+      console.error('[profile] 저장 실패', e)
+      setError(`저장하지 못했어요. 잠시 후 다시 시도해 주세요. (${e.message})`)
+    } finally {
+      setSaving(false)
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
-    saveProfile(toProfile(form))
-    setSaved(true)
+    run(async () => {
+      await saveProfile(toProfile(form))
+      setSaved(true)
+    })
   }
 
   function handleClear() {
-    clearProfile()
-    setForm(EMPTY_FORM)
-    setSaved(false)
+    run(async () => {
+      await clearProfile()
+      setForm(EMPTY_FORM)
+      setSaved(false)
+    })
   }
 
   // 입력 중인 값 기준 미리보기 (마감 안 된 프로그램만)
@@ -175,15 +210,21 @@ function ProfilePage() {
           </fieldset>
 
           <div className="form-actions">
-            <button type="submit" className="button-primary">
-              저장하기
+            <button type="submit" className="button-primary" disabled={saving}>
+              {saving ? '저장 중…' : '저장하기'}
             </button>
             {profile && (
-              <button type="button" className="button-secondary" onClick={handleClear}>
+              <button type="button" className="button-secondary" onClick={handleClear} disabled={saving}>
                 프로필 삭제
               </button>
             )}
           </div>
+
+          {error && (
+            <p className="field-hint" role="alert" style={{ color: 'var(--danger)' }}>
+              {error}
+            </p>
+          )}
 
           {saved && (
             <div className="notice" role="status">
@@ -210,7 +251,13 @@ function ProfilePage() {
               <strong>{counts.INELIGIBLE}개</strong>
             </li>
           </ul>
-          <p className="panel-note">프로필은 이 브라우저에만 저장돼요.</p>
+          {isRemote ? (
+            <p className="panel-note">프로필은 내 계정에 저장돼요.</p>
+          ) : (
+            <p className="panel-note">
+              프로필은 이 브라우저에만 저장돼요. <Link to="/login" state={{ from: '/profile' }}>로그인</Link>하면 계정에 저장돼요.
+            </p>
+          )}
         </aside>
       </div>
     </section>
