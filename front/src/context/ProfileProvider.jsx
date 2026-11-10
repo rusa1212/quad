@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ProfileContext } from './profile.js'
 import { useAuth } from './auth.js'
-import { deleteProfile, fetchProfile, upsertProfile } from '../lib/userData.js'
+import { fetchProfile, resetProfile, upsertProfile } from '../lib/userData.js'
 import { loadJSON, removeItem, saveJSON } from '../utils/storage.js'
 
 const STORAGE_KEY = 'program-hub.profile'
@@ -57,7 +57,7 @@ function ProfileProvider({ children }) {
       },
       async clearProfile() {
         if (userId) {
-          await deleteProfile(userId)
+          await resetProfile(userId)
           setRemote({ userId, profile: null })
         } else {
           removeItem(STORAGE_KEY)
