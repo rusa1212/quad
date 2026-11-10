@@ -21,6 +21,8 @@ quad/
 ### 2. DB 테이블 만들기
 Supabase 대시보드 → SQL Editor → `supabase/schema.sql` 내용 전체 붙여넣기 → Run
 
+이미 DB를 만든 뒤에 스키마가 바뀌면 `supabase/migrations/` 안의 파일 중 아직 실행하지 않은 것만 같은 방법으로 실행합니다.
+
 ### 3. 환경변수 파일 만들기
 예시 파일을 복사한 뒤 값을 채웁니다. `.env`는 git에 올라가지 않습니다.
 
