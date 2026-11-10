@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import FilterBar from '../components/FilterBar.jsx'
 import LoadState from '../components/LoadState.jsx'
 import Pagination from '../components/Pagination.jsx'
@@ -8,6 +7,7 @@ import { useProfile } from '../context/profile.js'
 import { usePrograms } from '../context/programs.js'
 import { evaluateEligibility } from '../utils/eligibility.js'
 import { DEFAULT_FILTERS, filterPrograms, getHostOrgs, sortPrograms } from '../utils/filter.js'
+import { useUrlFilters } from '../utils/useUrlFilters.js'
 import './ListPage.css'
 
 const PAGE_SIZE = 12 // 한 페이지에 보여줄 프로그램 수 (그리드 2·3·4열 모두 딱 떨어지게)
@@ -17,18 +17,11 @@ function ListPage() {
   const { programs, loading, error } = usePrograms()
   const hostOrgs = getHostOrgs(programs)
 
-  // 필터를 URL 쿼리에 저장 → 상세 화면에서 뒤로가기해도 필터 유지, 링크 공유 가능
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [searchKey, setSearchKey] = useState(0) // 초기화 시 검색창을 새로 마운트해 입력값 비우기
-  const filters = { ...DEFAULT_FILTERS, ...Object.fromEntries(searchParams) }
-
-  function updateFilter(key, value) {
-    const next = new URLSearchParams(searchParams)
-    if (!value || value === DEFAULT_FILTERS[key]) next.delete(key)
-    else next.set(key, value)
-    next.delete('page') // 필터·정렬이 바뀌면 1페이지부터
-    setSearchParams(next, { replace: true })
-  }
+  // 필터·정렬이 바뀌면 1페이지부터
+  const { filters, updateFilter, resetFilters, searchKey, searchParams, setSearchParams } = useUrlFilters(
+    DEFAULT_FILTERS,
+    { resetKeys: ['page'] },
+  )
 
   // 페이지 이동은 히스토리에 남겨서 뒤로가기로 이전 페이지 복귀
   function goToPage(nextPage) {
@@ -37,11 +30,6 @@ function ListPage() {
     else next.set('page', String(nextPage))
     setSearchParams(next)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  function resetFilters() {
-    setSearchParams({}, { replace: true })
-    setSearchKey((k) => k + 1)
   }
 
   const results = sortPrograms(filterPrograms(programs, filters, { profile }), filters.sort)
