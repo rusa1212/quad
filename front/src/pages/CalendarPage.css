@@ -100,15 +100,29 @@
   background: var(--surface);
   border: none;
   border-left: 1px solid var(--border);
+}
+
+/* 칸 전체를 덮는 날짜 선택 버튼 (날짜 숫자·+N 은 이 버튼 아래에 깔려 클릭이 버튼으로 감) */
+.calendar-cell-select {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
+}
+
+.calendar-cell-select:disabled {
+  cursor: default;
+}
+
+.calendar-cell-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .calendar-cell:first-child {
   border-left: none;
-}
-
-.calendar-cell:disabled {
-  cursor: default;
 }
 
 .calendar-cell.has-items:hover {
@@ -148,13 +162,28 @@
 }
 
 .calendar-chip {
+  position: relative; /* 날짜 선택 버튼 위로 올려 클릭 가능하게 */
+  z-index: 1;
+  display: block;
   overflow: hidden;
   padding: 2px 6px;
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-decoration: none;
   border-radius: 4px;
+}
+
+.calendar-chip:hover,
+.calendar-chip:focus-visible {
+  filter: brightness(0.94);
+  text-decoration: underline;
+}
+
+.calendar-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .calendar-chip.normal {

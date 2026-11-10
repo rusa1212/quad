@@ -169,27 +169,34 @@ function CalendarPage() {
               if (key === activeDate) classes.push('selected')
               if (items.length > 0) classes.push('has-items')
 
+              // 칸 전체를 덮는 버튼으로 날짜 선택, 그 위에 올린 칩(링크)을 누르면 공고 상세로 이동
               return (
-                <button
-                  key={key}
-                  type="button"
-                  role="gridcell"
-                  className={classes.join(' ')}
-                  onClick={() => selectDate(key)}
-                  disabled={items.length === 0}
-                  aria-label={`${date.getMonth() + 1}월 ${date.getDate()}일${items.length ? `, 마감 ${items.length}건` : ''}`}
-                >
-                  <span className="calendar-date">{date.getDate()}</span>
+                <div key={key} role="gridcell" aria-selected={key === activeDate} className={classes.join(' ')}>
+                  <button
+                    type="button"
+                    className="calendar-cell-select"
+                    onClick={() => selectDate(key)}
+                    disabled={items.length === 0}
+                    aria-label={`${date.getMonth() + 1}월 ${date.getDate()}일${items.length ? `, 마감 ${items.length}건` : ''}`}
+                  />
+                  <span className="calendar-date" aria-hidden="true">
+                    {date.getDate()}
+                  </span>
                   <span className="calendar-chips">
                     {items.slice(0, MAX_CHIPS).map((program) => (
-                      <span key={program.id} className={`calendar-chip ${getUrgency(program.apply_end, today)}`}>
+                      <Link
+                        key={program.id}
+                        to={`/programs/${program.id}`}
+                        className={`calendar-chip ${getUrgency(program.apply_end, today)}`}
+                        title={program.title}
+                      >
                         {program.title}
-                      </span>
+                      </Link>
                     ))}
                     {items.length > MAX_CHIPS && <span className="calendar-more">+{items.length - MAX_CHIPS}</span>}
                   </span>
                   {items.length > 0 && <span className="calendar-dot" aria-hidden="true">{items.length}</span>}
-                </button>
+                </div>
               )
             })}
           </div>
