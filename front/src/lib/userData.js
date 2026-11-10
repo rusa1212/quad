@@ -16,7 +16,11 @@ function toRow(profile) {
   }
 }
 
+// 가입 트리거가 만든 빈 행(입력값 없음)은 "아직 프로필 입력 전"(null)으로 취급
 function fromRow(row) {
+  const isEmpty =
+    row.grade == null && !row.major && !row.region && row.age == null && row.team == null && !row.interests?.length
+  if (isEmpty) return null
   return {
     grade: row.grade ?? '',
     major: row.major ?? '',
@@ -40,8 +44,13 @@ export async function upsertProfile(userId, profile) {
   if (error) throw error
 }
 
-export async function deleteProfile(userId) {
-  const { error } = await supabase.from('profiles').delete().eq('id', userId)
+// 입력값만 비움. 행(과 email)은 가입 트리거가 만든 것이라 지우지 않음
+export async function resetProfile(userId) {
+  const empty = { grade: '', major: '', region: '', age: '', hasTeam: null, interests: [] }
+  const { error } = await supabase
+    .from('profiles')
+    .update({ ...toRow(empty), updated_at: new Date().toISOString() })
+    .eq('id', userId)
   if (error) throw error
 }
 
