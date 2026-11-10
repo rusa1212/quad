@@ -243,7 +243,8 @@
 
 **인증**
 - [x] 이메일·비밀번호 회원가입/로그인/로그아웃 (Supabase Auth)
-- [ ] 대시보드 설정: Redirect URLs에 `http://localhost:5173`·배포 주소 추가 (현재 이메일 인증 켜짐)
+- [x] 비밀번호 재설정 (`/login` 비밀번호 찾기 → 메일 → `/reset-password`), 인증 메일 재발송, 만료된 메일 링크 안내
+- [ ] 대시보드 설정: Redirect URLs에 `http://localhost:5173/**`·`배포주소/**` 추가 (메일 링크가 `/login`, `/reset-password`로 돌아옴) (현재 이메일 인증 켜짐)
 - [ ] 운영용 SMTP 설정 (기본 메일 서버는 시간당 발송 제한)
 
 **백엔드 API (FastAPI)** — 비밀 키가 필요한 기능만
