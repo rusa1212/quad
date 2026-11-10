@@ -30,6 +30,7 @@ create index if not exists programs_type_idx on public.programs (type);
 -- ── 7.2 사용자 프로필 (auth.users 1:1) ──
 create table if not exists public.profiles (
   id          uuid primary key references auth.users (id) on delete cascade,
+  email       text,             -- 표시용 (auth.users.email 복사, 트리거가 채움)
   grade       smallint check (grade between 1 and 4),
   major       text,
   region      text,
@@ -38,6 +39,36 @@ create table if not exists public.profiles (
   interests   text[] default '{}',
   updated_at  timestamptz default now()
 );
+
+-- 회원가입 시 profiles 행 자동 생성, 이메일 변경 시 동기화
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path = ''
+as $$
+begin
+  insert into public.profiles (id, email) values (new.id, new.email) on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+create or replace function public.handle_user_email_change()
+returns trigger language plpgsql security definer set search_path = ''
+as $$
+begin
+  update public.profiles set email = new.email where id = new.id;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+drop trigger if exists on_auth_user_email_changed on auth.users;
+create trigger on_auth_user_email_changed
+  after update of email on auth.users
+  for each row when (old.email is distinct from new.email)
+  execute function public.handle_user_email_change();
 
 -- ── 7.2 관심 프로그램 ──
 create table if not exists public.bookmarks (
