@@ -22,7 +22,8 @@ function SearchInput({ initialValue, onChange }) {
   )
 }
 
-function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset, searchKey }) {
+// showClosed: '마감된 프로그램 포함' 체크박스 표시 여부 (캘린더는 마감된 것도 항상 보여주므로 숨김)
+function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset, searchKey, showClosed = true }) {
   return (
     <div className="filter-bar">
       <SearchInput key={searchKey} initialValue={filters.q} onChange={(value) => onChange('q', value)} />
@@ -68,14 +69,16 @@ function FilterBar({ filters, hostOrgs, hasProfile, onChange, onReset, searchKey
           <option value="30">30일 이내 마감</option>
         </select>
 
-        <label className="filter-check">
-          <input
-            type="checkbox"
-            checked={Boolean(filters.closed)}
-            onChange={(e) => onChange('closed', e.target.checked ? '1' : '')}
-          />
-          마감된 프로그램 포함
-        </label>
+        {showClosed && (
+          <label className="filter-check">
+            <input
+              type="checkbox"
+              checked={Boolean(filters.closed)}
+              onChange={(e) => onChange('closed', e.target.checked ? '1' : '')}
+            />
+            마감된 프로그램 포함
+          </label>
+        )}
 
         {hasProfile && (
           <label className="filter-check filter-fit">
