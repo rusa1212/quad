@@ -65,3 +65,35 @@
   background: #fee2e2;
   border-radius: 8px;
 }
+
+.login-panel a.button-primary {
+  text-align: center;
+  text-decoration: none;
+}
+
+.login-resend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-resend .button-secondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.login-link {
+  align-self: center;
+  padding: 4px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link:hover {
+  color: var(--accent);
+}
