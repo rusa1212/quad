@@ -355,3 +355,27 @@
     font-size: 18px;
   }
 }
+
+/* ---------- 필터 ---------- */
+
+.calendar-filters {
+  margin-bottom: 12px;
+}
+
+.calendar-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.calendar-summary p {
+  margin: 0;
+}
+
+.calendar-filter-count {
+  color: var(--accent);
+}
