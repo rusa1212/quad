@@ -33,3 +33,6 @@ export const ELIGIBILITY_STATUS = {
   CHECK: '확인 필요',
   INELIGIBLE: '지원 불가',
 }
+
+// 비밀번호 최소 길이 (Supabase Auth 기본값)
+export const MIN_PASSWORD = 6
