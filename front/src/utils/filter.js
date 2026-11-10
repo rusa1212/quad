@@ -28,7 +28,8 @@ export function filterPrograms(programs, filters, { profile = null, today = new 
     }
 
     if (filters.type && program.type !== filters.type) return false
-    if (filters.region && program.region !== '전국' && program.region !== filters.region) return false
+    // region 은 '서울' 같은 단일 지역 또는 '광주·전남' 처럼 여러 지역일 수 있음 (온통청년)
+    if (filters.region && program.region !== '전국' && !(program.region ?? '').split('·').includes(filters.region)) return false
     if (filters.host && program.host_org !== filters.host) return false
     if (!filters.closed && days < 0) return false
     if (filters.deadline && (days < 0 || days > Number(filters.deadline))) return false
