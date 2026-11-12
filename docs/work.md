@@ -218,7 +218,7 @@
 - [x] 다중 지역(예: `광주·전남`) 필터 지원
 - [x] 로그인·회원가입 화면 (`pages/LoginPage.jsx`)
 - [x] 프로필·북마크를 로그인 시 서버(DB)에 저장, 비로그인 시 localStorage, 로그인할 때 로컬 데이터 계정으로 이전
-- [ ] RAG 채팅 UI (`pages/AskPage.jsx`, 현재 안내 문구만)
+- [x] RAG 채팅 UI (`pages/AskPage.jsx`, `components/chat/`) — 현재 mock 응답, `/api/ask` 연결 대기 (`lib/askApi.js`, `VITE_ASK_MOCK=false`로 전환)
 - [ ] 알림 설정 UI
 - [ ] 소셜 로그인 (구글·카카오) — 선택
 
